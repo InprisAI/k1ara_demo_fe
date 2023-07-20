@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>k1ara bot</title>
+  <!-- Add Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <h1 style="text-align: center;">k1ara bot</h1>
+    <div class="container mt-5">
+      <div class="d-flex flex-column">
+        <div class="row-12 row-md-4">
+          <button class="btn-primary btn-lg  btn-block mb-3" onclick="callAPI('Driver on phone')">Driver on phone</button>
+        </div>
+        <div class="row-6 row-md-2">
+          <button class="btn btn-primary btn-lg  btn-block mb-3" onclick="callAPI('Driver is tired')">Driver is tired</button>
+        </div>
+      </div>
+    </div>
+    <div class="container" style="text-align: center;" >
+      <textarea style="width: 100%;" class="input-field message_text" placeholder="Enter your message"></textarea>
+      <button style="text-align: center;" class="btn btn-primary btn-lg" onclick="smartCallGPT()">Send</button>
+    </div>
+  </div>
+
+  <!-- Add Bootstrap JS and lodasht -->
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script>
+    const requestTemplate = {
+        "client_name" : "k1ara",
+        "key" : "converse_params",
+        "value" : `INITIAL_VALUE`
+    }
+
+    // const baseUrl = 'http://127.0.0.1:5000/'
+    const baseUrl = 'http://chatwith.humains.com/'
+
+    function callAPI(text) {
+      const apiDirective = 'prepare_demo_conversation'
+      var requestBody = _.cloneDeep(requestTemplate)
+      requestBody["value"] = `{"system_alert": "${text}"}`
+
+      fetch(baseUrl + apiDirective, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody)
+      })
+      // .then(response => {
+      //   console.log('\n\n response.json()\n' + response.json()); // Process the response data
+      // })
+      .then(response => {
+        console.log('\n\n data\n' + response); // Process the response data
+      })
+      .catch(error => {
+        console.error(error); // Handle any errors
+      });
+    }
+
+    function smartCallGPT() {
+      const apiDirective = 'prepare_instruction'
+      var requestBody = _.cloneDeep(requestTemplate)
+      var text = $('.message_text')[0].value
+      requestBody["value"] = `{"system_alert": "${text}"}`
+      
+      fetch(baseUrl + apiDirective, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+      // .then(response => {
+      //   console.log('\n\n response.json()\n' + response.json()); // Process the response data
+      // })
+      .then(response => {
+        console.log('\n\n data\n' + response); // Process the response data
+      })
+      .catch(error => {
+        console.error(error); // Handle any errors
+      });
+
+    }
+  </script>
+</body>
+</html>
