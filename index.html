@@ -15,6 +15,9 @@
         <div class="row-6 row-md-2">
           <button class="btn btn-primary btn-lg  btn-block mb-3" onclick="callAPI('Driver is tired')">Driver is tired</button>
         </div>
+        <div class="row-12 row-md-4">
+          <button class="btn-primary btn-lg  btn-block mb-3" onclick="callAPI('')">CLEAR CONVERSATION</button>
+        </div>
       </div>
     </div>
     <div class="container" style="text-align: center;" >
@@ -35,12 +38,15 @@
     }
 
     // const baseUrl = 'http://127.0.0.1:5000/'
-    const baseUrl = 'http://chatwith.humains.com/'
+    const baseUrl = 'https://chatwith.humains.com/'
 
     function callAPI(text) {
       const apiDirective = 'prepare_demo_conversation'
-      var requestBody = _.cloneDeep(requestTemplate)
-      requestBody["value"] = `{"system_alert": "${text}"}`
+      var requestBody = _.cloneDeep(requestTemplate)      
+      if(text.length > 0)
+        requestBody["value"] = `{"system_alert": "${text}"}`
+      else
+        requestBody["value"] = ``
 
       fetch(baseUrl + apiDirective, {
         method: 'POST',
