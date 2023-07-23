@@ -1,35 +1,60 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>k1ara bot</title>
+  <title>Clara Update Panel</title>
   <!-- Add Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    .pretty-label {
+      padding: 5px 10px;
+      font-size: 16px;
+      font-weight: bold;
+      background-color: #11ff00;
+      color: #100d0d;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+    .container{
+      margin-top: 10px;
+    }
+    .headLine{
+      height: 200px;
+      background-image: url('./LCP.png');
+      background-size: cover;
+      background-position: center;
+    }
+  </style>
 </head>
 <body>
-    <h1 style="text-align: center;">k1ara bot</h1>
-    <div class="container mt-5">
-      <div class="d-flex flex-column">
-        <div class="row-12 row-md-4">
-          <button class="btn-primary btn-lg  btn-block mb-3" onclick="callAPI('Driver on phone')">Driver on phone</button>
-        </div>
-        <div class="row-6 row-md-2">
-          <button class="btn btn-primary btn-lg  btn-block mb-3" onclick="callAPI('Driver is tired')">Driver is tired</button>
-        </div>
-        <div class="row-12 row-md-4">
-          <button class="btn-primary btn-lg  btn-block mb-3" onclick="callAPI('')">CLEAR CONVERSATION</button>
+    <div class="dashboard container rounded" style="width: 75%; text-align: center;">
+      <!-- <h1 style="text-align: center;">Clara Update Panel</h1> -->
+      <div class="headLine"><br><br><br><br><br></div>
+      <div class="container mt-5">
+        <div class="d-flex flex-column">
+          <div class="row-12 row-md-4">
+            <button style="width: 75%; margin: auto;" class="btn-primary btn-lg  btn-block mb-3" onclick="callAPI('Driver is Distracted')">Driver is Distracted</button>
+          </div>
+          <div class="row-6 row-md-2">
+            <button style="width: 75%; margin: auto;" class="btn btn-primary btn-lg  btn-block mb-3" onclick="callAPI('Driver is tired')">Driver is tired</button>
+          </div>
         </div>
       </div>
+      <div class="container" >
+        <textarea style="width: 75%;" class="input-field message_text" placeholder="Enter your message"></textarea>
+        <br>
+        <button style="text-align: center; margin-top: 15px; margin-bottom: 15px;" class="btn btn-primary btn-lg" onclick="smartCallGPT()">Send</button>
+
+        <button style="text-align: center; margin-top: 15px; margin-bottom: 15px;" class="btn btn-primary btn-lg" onclick="callAPI('')">Clear</button>
+      </div>
+      <div class="container" >
+        <span class="pretty-label">Last action: None</span>
+      </div>
     </div>
-    <div class="container" style="text-align: center;" >
-      <textarea style="width: 100%;" class="input-field message_text" placeholder="Enter your message"></textarea>
-      <button style="text-align: center;" class="btn btn-primary btn-lg" onclick="smartCallGPT()">Send</button>
-    </div>
-  </div>
+
 
   <!-- Add Bootstrap JS and lodasht -->
   <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <script>
     const requestTemplate = {
         "client_name" : "k1ara",
@@ -39,6 +64,7 @@
 
     // const baseUrl = 'http://127.0.0.1:5000/'
     const baseUrl = 'https://chatwith.humains.com/'
+    var lastAction = ''
 
     function callAPI(text) {
       const apiDirective = 'prepare_demo_conversation'
@@ -47,6 +73,7 @@
         requestBody["value"] = `{"system_alert": "${text}"}`
       else
         requestBody["value"] = ``
+      lastAction = requestBody["value"]
 
       fetch(baseUrl + apiDirective, {
         method: 'POST',
@@ -59,7 +86,16 @@
       //   console.log('\n\n response.json()\n' + response.json()); // Process the response data
       // })
       .then(response => {
-        console.log('\n\n data\n' + response); // Process the response data
+        if (lastAction.length < 1){
+          $('.pretty-label')[0].textContent = 'New Commands Cleared'
+        } else { 
+          var now = new Date();
+          var hours = now.getHours().toString().padStart(2, '0');
+          var minutes = now.getMinutes().toString().padStart(2, '0');
+          var seconds = now.getSeconds().toString().padStart(2, '0');
+          $('.pretty-label')[0].textContent = `New Commands Issued ${hours}:${minutes}:${seconds}`
+          console.log('\n\n data\n' + response); // Process the response data
+        }
       })
       .catch(error => {
         console.error(error); // Handle any errors
@@ -71,7 +107,7 @@
       var requestBody = _.cloneDeep(requestTemplate)
       var text = $('.message_text')[0].value
       requestBody["value"] = `{"system_alert": "${text}"}`
-      
+      lastAction = requestBody["value"]
       fetch(baseUrl + apiDirective, {
         method: 'POST',
         headers: {
@@ -83,6 +119,11 @@
       //   console.log('\n\n response.json()\n' + response.json()); // Process the response data
       // })
       .then(response => {
+        var now = new Date();
+        var hours = now.getHours().toString().padStart(2, '0');
+        var minutes = now.getMinutes().toString().padStart(2, '0');
+        var seconds = now.getSeconds().toString().padStart(2, '0');
+        $('.pretty-label')[0].textContent = `New Commands Issued ${hours}:${minutes}:${seconds}`
         console.log('\n\n data\n' + response); // Process the response data
       })
       .catch(error => {
