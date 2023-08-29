@@ -76,12 +76,36 @@
     const baseUrl = 'https://chatwith.humains.com/'
     var lastAction = ''
 
+    
+    $(document).ready(function() {
+      console.log("get k1ara:default:converse_params"); 
+//__setting:prompt:sack5
+      fetch(baseUrl + 'settings_key/k1ara:default:converse_params', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      })
+      .then(response => {
+        return response.text()
+      })
+      .then(data => {
+          formatVal = data; 
+          console.log('Great Success');
+        
+      })
+      .catch(error => {
+        console.error(error); // Handle any errors
+      });
+
+    });
+
     function callAPI(text) {
       const apiDirective = 'prepare_demo_conversation'
       var requestBody = _.cloneDeep(requestTemplate)      
       if(text.length > 0){ 
-        formatVal["system_alert"] = text
-        requestBody["value"] = JSON.stringify(formatVal)
+        editedVal  = formatVal.slice(0, formatVal.length) + ",\n" + "system_alert : " + text + "}"
+        requestBody["value"] = editedVal
       } else
         requestBody["value"] = JSON.stringify(formatVal)
       lastAction = requestBody["value"]
@@ -118,8 +142,8 @@
       var requestBody = _.cloneDeep(requestTemplate)
       var text = $('.message_text')[0].value
       if(text.length > 0){ 
-        formatVal["system_alert"] = text
-        requestBody["value"] = JSON.stringify(formatVal)
+        editedVal  = formatVal.slice(0, formatVal.length) + ",\n" + "system_alert : "+ text + "}"
+        requestBody["value"] = editedVal
       } else
         requestBody["value"] = JSON.stringify(formatVal)
       lastAction = requestBody["value"]
