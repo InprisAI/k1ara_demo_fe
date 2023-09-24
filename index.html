@@ -116,18 +116,19 @@
       $('.pretty-label').eq(0).css('background-color', '#11ff00');
       fetch(baseUrl + 'deploy_settings', {
         method: 'GET',
+        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/json',
         }
       })
       .then(response => {
-        if (response.status == 200){ 
+        // if (response.status == 200){ 
           $('.pretty-label')[0].textContent = 'settings redeployd successfully'
           $('.pretty-label').eq(0).css('background-color', '#11ff00');
-        } else { 
-          $('.pretty-label')[0].textContent = 'Error, returned status code: ' + response.status
-          $('.pretty-label').eq(0).css('background-color', '#f90606');
-        }
+        // } else { 
+        //   $('.pretty-label')[0].textContent = 'Error, returned status code: ' + response.status
+        //   $('.pretty-label').eq(0).css('background-color', '#f90606');
+        // }
       })
       .catch(error => {
         console.error(error); // Handle any errors
@@ -157,6 +158,7 @@
       //   console.log('\n\n response.json()\n' + response.json()); // Process the response data
       // })
       .then(response => {
+        debugger;
         if (lastAction.length < 1){
           $('.pretty-label')[0].textContent = 'New Commands Cleared'
         } else { 
