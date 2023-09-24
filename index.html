@@ -133,6 +133,7 @@
           var minutes = now.getMinutes().toString().padStart(2, '0');
           var seconds = now.getSeconds().toString().padStart(2, '0');
           $('.pretty-label')[0].textContent = `New Commands Issued ${hours}:${minutes}:${seconds}`
+        $('.pretty-label').eq(0).css('background-color', '#11ff00');
           console.log('\n\n data\n' + response); // Process the response data
         }
       })
@@ -169,6 +170,7 @@
         var minutes = now.getMinutes().toString().padStart(2, '0');
         var seconds = now.getSeconds().toString().padStart(2, '0');
         $('.pretty-label')[0].textContent = `New Commands Issued ${hours}:${minutes}:${seconds}`
+        $('.pretty-label').eq(0).css('background-color', '#11ff00');
         console.log('\n\n data\n' + response); // Process the response data
       })
       .catch(error => {
