@@ -73,7 +73,8 @@
     }
 
     // const baseUrl = 'http://127.0.0.1:5000/'
-    const baseUrl = 'https://chatwith.humains.com/'
+    // const baseUrl = 'https://humains-core-dev.appspot.com/' // dev
+    const baseUrl = 'https://chatwith.humains.com/' // prod
     var lastAction = ''
 
     
@@ -90,12 +91,15 @@
         return response.text()
       })
       .then(data => {
+          debugger;
           formatVal = data; 
           console.log('Great Success');
         
       })
       .catch(error => {
         console.error(error); // Handle any errors
+        $('.pretty-label')[0].textContent = 'Error: ' + error
+        $('.pretty-label').eq(0).css('background-color', '#f90606');
       });
 
     });
@@ -134,6 +138,8 @@
       })
       .catch(error => {
         console.error(error); // Handle any errors
+        $('.pretty-label')[0].textContent = 'Error: ' + error
+        $('.pretty-label').eq(0).css('background-color', '#f90606');
       });
     }
 
@@ -167,6 +173,8 @@
       })
       .catch(error => {
         console.error(error); // Handle any errors
+        $('.pretty-label')[0].textContent = 'Error: ' + error
+        $('.pretty-label').eq(0).css('background-color', '#f90606');
       });
 
     }
